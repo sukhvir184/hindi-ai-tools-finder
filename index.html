@@ -5,38 +5,57 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hindi AI Tools Finder</title>
 <style>
-body{font-family:Arial,sans-serif;margin:0;background:#f5f7fb;color:#222}
-header{background:#24292f;color:white;padding:25px 15px;text-align:center}
+body{font-family:Arial,sans-serif;margin:0;background:#f4f4f9}
+header{background:#24292f;color:white;padding:15px;text-align:center}
 .search{padding:20px;text-align:center}
-input{width:90%;max-width:500px;padding:14px;font-size:16px;border:1px solid #ccc;border-radius:10px}
-.tools{padding:10px 20px 30px;max-width:700px;margin:auto}
-.tool{background:white;padding:18px;margin:15px 0;border-radius:12px;box-shadow:0 2px 8px #ddd}
-.tool a{display:inline-block;margin-top:10px;padding:10px 15px;background:#0969da;color:white;text-decoration:none;border-radius:8px}
+input{width:90%;max-width:500px;padding:12px;border-radius:25px;border:1px solid #ccc;font-size:16px}
+.tools{padding:10px 20px 30px;max-width:900px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.tool{background:white;padding:18px;border-radius:10px;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+.tool h3{margin:0 0 5px 0;color:#24292f}
+.tool p{margin:0;font-size:14px;color:#555}
+.tool a{display:inline-block;margin-top:10px;background:#2da44f;color:white;padding:6px 12px;border-radius:5px;text-decoration:none}
+@media(max-width:600px){.tools{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header>
-<h1>🤖 Hindi AI Tools Finder</h1>
-<p>हिंदी में नए और उपयोगी AI Tools खोजें</p>
+<h1>Hindi AI Tools Finder</h1>
+<p>अपने काम के लिए सबसे अच्छा AI Tool खोजें</p>
 </header>
+
 <div class="search">
-<input type="text" id="searchBox" placeholder="AI Tool खोजें... जैसे Video, Photo" onkeyup="searchTools()">
+<input type="text" id="searchBox" placeholder="यहाँ लिखें... जैसे - फोटो, वीडियो, लिखना" onkeyup="searchTools()">
 </div>
-<div class="tools" id="toolList">
-<div class="tool"><h2>💬 ChatGPT - लिखने वाला AI</h2><p>हिंदी में निबंध, कहानी, ईमेल लिखने के लिए सबसे अच्छा।</p><a href="https://chat.openai.com" target="_blank">Tool देखें</a></div>
-<div class="tool"><h2>🎨 Leonardo AI - फोटो बनाने वाला</h2><p>टेक्स्ट लिखो और AI से सुंदर फोटो बनाओ।</p><a href="https://leonardo.ai" target="_blank">Tool देखें</a></div>
-<div class="tool"><h2>🎬 CapCut AI - वीडियो बनाने वाला</h2><p>AI से रील और यूट्यूब वीडियो बनाओ।</p><a href="https://www.capcut.com/tools/ai-video-maker" target="_blank">Tool देखें</a></div>
-<div class="tool"><h2>🎙️ ElevenLabs - आवाज वाला AI</h2><p>हिंदी टेक्स्ट को इंसान जैसी आवाज में बदलो।</p><a href="https://elevenlabs.io" target="_blank">Tool देखें</a></div>
-</div>
+
+<div class="tools" id="toolsList"></div>
+
 <script>
-function searchTools(){
-let input=document.getElementById("searchBox").value.toLowerCase();
-let tools=document.querySelectorAll(".tool");
-tools.forEach(function(tool){
-let text=tool.innerText.toLowerCase();
-tool.style.display=text.includes(input)?"block":"none";
-});
+const allTools = [
+{name:"ChatGPT", kaam:"लिखने और सवाल जवाब के लिए", link:"https://chat.openai.com"},
+{name:"Canva AI", kaam:"फोटो और पोस्टर बनाने के लिए", link:"https://canva.com"},
+{name:"Pika AI", kaam:"वीडियो बनाने के लिए", link:"https://pika.art"},
+{name:"ElevenLabs", kaam:"आवाज बदलने और वॉइस बनाने के लिए", link:"https://elevenlabs.io"},
+{name:"Remove.bg", kaam:"फोटो का बैकग्राउंड हटाने के लिए", link:"https://remove.bg"},
+{name:"Gemini", kaam:"गूगल का AI लिखने और खोजने के लिए", link:"https://gemini.google.com"},
+{name:"Leonardo AI", kaam:"बढ़िया फोटो बनाने के लिए", link:"https://leonardo.ai"},
+{name:"CapCut AI", kaam:"वीडियो एडिटिंग के लिए", link:"https://capcut.com"},
+{name:"Quillbot", kaam:"पैराग्राफ को दोबारा लिखने के लिए", link:"https://quillbot.com"},
+{name:"Notion AI", kaam:"नोट्स और प्लान बनाने के लिए", link:"https://notion.so"}
+];
+
+const list = document.getElementById("toolsList");
+function showTools(data){
+  list.innerHTML = "";
+  data.forEach(t => {
+    list.innerHTML += `<div class="tool"><h3>${t.name}</h3><p>${t.kaam}</p><a href="${t.link}" target="_blank">इस्तेमाल करें</a></div>`;
+  });
 }
+function searchTools(){
+  let q = document.getElementById("searchBox").value.toLowerCase();
+  let filtered = allTools.filter(t => t.name.toLowerCase().includes(q) || t.kaam.toLowerCase().includes(q));
+  showTools(filtered);
+}
+showTools(allTools);
 </script>
 </body>
 </html>
