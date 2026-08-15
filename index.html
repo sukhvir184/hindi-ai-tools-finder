@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hindi AI Tools Finder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f5f7fb;
+      color: #222;
+    }
+    header {
+      background: #24292f;
+      color: white;
+      padding: 25px 15px;
+      text-align: center;
+    }
+    h1 {
+      margin: 0 0 10px;
+    }
+    .search {
+      padding: 20px;
+      text-align: center;
+    }
+    input {
+      width: 90%;
+      max-width: 500px;
+      padding: 14px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+    .tools {
+      padding: 10px 20px 30px;
+      max-width: 700px;
+      margin: auto;
+    }
+    .tool {
+      background: white;
+      padding: 18px;
+      margin: 15px 0;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px #ddd;
+    }
+    .tool h2 {
+      margin-top: 0;
+    }
+    .tool a {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 15px;
+      background: #0969da;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🤖 Hindi AI Tools Finder</h1>
+  <p>हिंदी में नए और उपयोगी AI Tools खोजें</p>
+</header>
+
+<div class="search">
+  <input type="text" id="searchBox" placeholder="AI Tool खोजें..." onkeyup="searchTools()">
+</div>
+
+<div class="tools" id="toolList">
+
+  <div class="tool">
+    <h2>🎬 AI Video Generator</h2>
+    <p>AI की मदद से वीडियो बनाने वाला टूल।</p>
+    <a href="https://www.google.com" target="_blank">Tool देखें</a>
+  </div>
+
+  <div class="tool">
+    <h2>✍️ AI Writing Tool</h2>
+    <p>लेख, आइडिया और कंटेंट बनाने में मदद करता है।</p>
+    <a href="https://www.google.com" target="_blank">Tool देखें</a>
+  </div>
+
+  <div class="tool">
+    <h2>🎨 AI Image Generator</h2>
+    <p>टेक्स्ट से AI इमेज बनाने के लिए उपयोगी।</p>
+    <a href="https://www.google.com" target="_blank">Tool देखें</a>
+  </div>
+
+</div>
+
+<script>
+function searchTools() {
+  let input = document.getElementById("searchBox").value.toLowerCase();
+  let tools = document.querySelectorAll(".tool");
+
+  tools.forEach(function(tool) {
+    let text = tool.innerText.toLowerCase();
+
+    if (text.includes(input)) {
+      tool.style.display = "block";
+    } else {
+      tool.style.display = "none";
+    }
+  });
+}
+</script>
+
+</body>
+</html>
