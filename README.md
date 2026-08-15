@@ -1,1 +1,1 @@
-https://raw.githubusercontent.com/sukhvir184/.../file.pdf
+https://raw.githubusercontent.com/sukhvir184/.../file.pdf Hindi
