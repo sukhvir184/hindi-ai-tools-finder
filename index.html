@@ -1,61 +1,84 @@
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hindi AI Tools Finder</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-body{font-family:Arial,sans-serif;margin:0;background:#f4f4f9}
-header{background:#24292f;color:white;padding:15px;text-align:center}
-.search{padding:20px;text-align:center}
-input{width:90%;max-width:500px;padding:12px;border-radius:25px;border:1px solid #ccc;font-size:16px}
-.tools{padding:10px 20px 30px;max-width:900px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:15px}
-.tool{background:white;padding:18px;border-radius:10px;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
-.tool h3{margin:0 0 5px 0;color:#24292f}
-.tool p{margin:0;font-size:14px;color:#555}
-.tool a{display:inline-block;margin-top:10px;background:#2da44f;color:white;padding:6px 12px;border-radius:5px;text-decoration:none}
-@media(max-width:600px){.tools{grid-template-columns:1fr}}
+*{font-family:'Noto Sans Devanagari', Arial, sans-serif; box-sizing:border-box;}
+body{margin:0; background:#f6f8fa; color:#24292f;}
+header{background:#24292f; color:white; padding:18px 20px; position:sticky; top:0; z-index:10;}
+header h1{margin:0; font-size:22px;}
+header p{margin:4px 0 0 0; color:#9ba3af; font-size:13px;}
+.search{padding:22px 20px; text-align:center; background:white; border-bottom:1px solid #d0d7de;}
+.search input{width:90%; max-width:600px; padding:14px 18px; font-size:16px; border:2px solid #d0d7de; border-radius:12px; outline:none;}
+.search input:focus{border-color:#24292f;}
+.cats{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:14px;}
+.cats button{border:1px solid #d0d7de; background:#f6f8fa; padding:7px 16px; border-radius:20px; cursor:pointer; font-size:13px; font-weight:500;}
+.cats button.active{background:#24292f; color:white; border-color:#24292f;}
+.tools{padding:20px; max-width:1150px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr)); gap:16px;}
+.tool{background:white; padding:18px; border-radius:12px; border:1px solid #d0d7de; box-shadow:0 1px 3px rgba(0,0,0,0.05); transition:0.2s;}
+.tool:hover{transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.08);}
+.tool h3{margin:0 0 6px 0; color:#24292f; font-size:16px;}
+.tool .cat{font-size:11px; background:#f6f8fa; border:1px solid #d0d7de; padding:2px 8px; border-radius:20px; display:inline-block; margin-bottom:8px;}
+.tool p{margin:0; font-size:14px; color:#57606a; line-height:1.5; min-height:42px;}
+.tool a{display:inline-block; margin-top:14px; background:#24292f; color:white; padding:9px 16px; border-radius:8px; text-decoration:none; font-size:13px; font-weight:600;}
+.tool a:hover{background:black;}
+footer{text-align:center; padding:20px; color:#8c959f; font-size:12px; border-top:1px solid #d0d7de; margin-top:20px; background:white;}
+@media(max-width:600px){.tools{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 <header>
-<h1>Hindi AI Tools Finder</h1>
-<p>अपने काम के लिए सबसे अच्छा AI Tool खोजें</p>
+<h1>हिंदी AI Tools Finder</h1>
+<p>हिंदी के लिए बेस्ट AI टूल्स खोजें - 9 टूल्स • रोज़ अपडेट</p>
 </header>
-
 <div class="search">
-<input type="text" id="searchBox" placeholder="यहाँ लिखें... जैसे - फोटो, वीडियो, लिखना" onkeyup="searchTools()">
+<input type="text" id="searchInput" placeholder="टूल खोजें... जैसे - ChatGPT, Voice, Video, लेखन">
+<div class="cats" id="cats"></div>
 </div>
-
-<div class="tools" id="toolsList"></div>
-
+<div class="tools" id="tools"></div>
+<footer>Made by sukhvir184 • GitHub • कोई ट्रैकिंग नहीं, सिर्फ हिंदी AI</footer>
 <script>
-const allTools = [
-{name:"ChatGPT", kaam:"लिखने और सवाल जवाब के लिए", link:"https://chat.openai.com"},
-{name:"Canva AI", kaam:"फोटो और पोस्टर बनाने के लिए", link:"https://canva.com"},
-{name:"Pika AI", kaam:"वीडियो बनाने के लिए", link:"https://pika.art"},
-{name:"ElevenLabs", kaam:"आवाज बदलने और वॉइस बनाने के लिए", link:"https://elevenlabs.io"},
-{name:"Remove.bg", kaam:"फोटो का बैकग्राउंड हटाने के लिए", link:"https://remove.bg"},
-{name:"Gemini", kaam:"गूगल का AI लिखने और खोजने के लिए", link:"https://gemini.google.com"},
-{name:"Leonardo AI", kaam:"बढ़िया फोटो बनाने के लिए", link:"https://leonardo.ai"},
-{name:"CapCut AI", kaam:"वीडियो एडिटिंग के लिए", link:"https://capcut.com"},
-{name:"Quillbot", kaam:"पैराग्राफ को दोबारा लिखने के लिए", link:"https://quillbot.com"},
-{name:"Notion AI", kaam:"नोट्स और प्लान बनाने के लिए", link:"https://notion.so"}
+const toolsData = [
+{ name:"ChatGPT हिंदी", cat:"चैटबॉट", desc:"हिंदी में सवाल-जवाब, निबंध, ईमेल और कहानियाँ लिखने के लिए सबसे पॉपुलर AI।", link:"https://chat.openai.com", tags:"chat लेखन" },
+{ name:"Gemini", cat:"चैटबॉट", desc:"Google का AI जो हिंदी समझता है, फोटो देखकर भी जवाब देता है।", link:"https://gemini.google.com", tags:"google" },
+{ name:"Sarvam AI", cat:"लेखन", desc:"भारतीय भाषाओं के लिए बना AI - हिंदी में सटीक लेखन और ट्रांसलेशन।", link:"https://www.sarvam.ai", tags:"भारतीय llm" },
+{ name:"Murf AI हिंदी वॉयस", cat:"वॉयस", desc:"हिंदी में नैचुरल वॉयसओवर बनाओ - YouTube और पॉडकास्ट के लिए।", link:"https://murf.ai", tags:"voice tts" },
+{ name:"ElevenLabs हिंदी", cat:"वॉयस", desc:"सबसे रियलिस्टिक हिंदी AI वॉयस क्लोनिंग और डबिंग।", link:"https://elevenlabs.io", tags:"cloning" },
+{ name:"Pictory हिंदी", cat:"वीडियो", desc:"टेक्स्ट डालो, ऑटोमैटिक हिंदी वीडियो बनाओ - रील्स के लिए बेस्ट।", link:"https://pictory.ai", tags:"video reels" },
+{ name:"Canva AI", cat:"इमेज", desc:"हिंदी टेक्स्ट से पोस्टर, थंबनेल और इमेज बनाओ।", link:"https://www.canva.com", tags:"design poster" },
+{ name:"Krutrim", cat:"लेखन", desc:"Ola का देसी AI मॉडल - हिंदी में कोडिंग और ज्ञान के लिए।", link:"https://olakrutrim.com", tags:"ola देसी" },
+{ name:"Bhashini", cat:"ट्रांसलेशन", desc:"सरकार का AI अनुवाद प्लेटफॉर्म - 22 भाषाओं में तुरंत ट्रांसलेशन।", link:"https://bhashini.gov.in", tags:"अनुवाद सरकारी" }
 ];
-
-const list = document.getElementById("toolsList");
-function showTools(data){
-  list.innerHTML = "";
-  data.forEach(t => {
-    list.innerHTML += `<div class="tool"><h3>${t.name}</h3><p>${t.kaam}</p><a href="${t.link}" target="_blank">इस्तेमाल करें</a></div>`;
-  });
+const categories = ["सभी","लेखन","वॉयस","वीडियो","इमेज","ट्रांसलेशन","चैटबॉट"];
+let activeCat = "सभी";
+const catsDiv = document.getElementById('cats');
+const toolsDiv = document.getElementById('tools');
+const searchInput = document.getElementById('searchInput');
+function renderCats(){ catsDiv.innerHTML = categories.map(c=>`<button class="${c===activeCat?'active':''}" onclick="setCat('${c}')">${c}</button>`).join(''); }
+function setCat(c){ activeCat=c; renderCats(); renderTools(); }
+function renderTools(){
+const q = searchInput.value.toLowerCase();
+const filtered = toolsData.filter(t=>{
+const catMatch = activeCat==="सभी" || t.cat===activeCat;
+const searchMatch = (t.name+t.desc+t.tags+t.cat).toLowerCase().includes(q);
+return catMatch && searchMatch;
+});
+if(filtered.length===0){ toolsDiv.innerHTML=`<p style="grid-column:1/-1; text-align:center; color:#57606a; padding:30px;">कोई टूल नहीं मिला "${searchInput.value}" के लिए।</p>`; return; }
+toolsDiv.innerHTML = filtered.map(t=>`
+<div class="tool">
+<span class="cat">${t.cat}</span>
+<h3>${t.name}</h3>
+<p>${t.desc}</p>
+<a href="${t.link}" target="_blank">इस्तेमाल करें →</a>
+</div>
+`).join('');
 }
-function searchTools(){
-  let q = document.getElementById("searchBox").value.toLowerCase();
-  let filtered = allTools.filter(t => t.name.toLowerCase().includes(q) || t.kaam.toLowerCase().includes(q));
-  showTools(filtered);
-}
-showTools(allTools);
+searchInput.addEventListener('input', renderTools);
+renderCats(); renderTools();
 </script>
 </body>
 </html>
